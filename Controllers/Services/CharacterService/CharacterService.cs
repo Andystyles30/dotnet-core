@@ -19,10 +19,7 @@ namespace dotnet_rpg.Controllers.Services.CharacterService
             _context = context;
             _mapper = mapper;
         }
-        private static List<Character> characters = new List<Character> {
-            new Character(),
-            new Character { Id = 1, Name = "Andy" }
-        };
+
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
             ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -78,8 +75,9 @@ namespace dotnet_rpg.Controllers.Services.CharacterService
             ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             try
             {
-                characters.Remove(characters.First(c => c.Id == id));
-                serviceResponse.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
+                _context.Characters.Remove(await _context.Characters.FirstAsync(c => c.Id == id));
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = (_context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             }
             catch (Exception ex)
             {
