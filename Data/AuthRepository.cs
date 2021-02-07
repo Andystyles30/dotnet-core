@@ -33,9 +33,25 @@ namespace dotnet_rpg.Data
             repsonse.Data = user.Id;
             return repsonse;
         }
-        public Task<ServiceResponse<string>> Login(string username, string password)
+        public async Task<ServiceResponse<string>> Login(string username, string password)
         {
-            throw new System.NotImplementedException();
+            ServiceResponse<string> repsonse = new ServiceResponse<string>();
+            User user = await _context.Users.FirstOrDefaultAsync(x => x.Username.ToLower().Equals(username.ToLower()));
+            if (user == null)
+            {
+                repsonse.Success = false;
+                repsonse.Message = "User not found";
+            }
+            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                repsonse.Success = false;
+                repsonse.Message = "Wrong Password";
+            }
+            else
+            {
+                repsonse.Data = user.Id.ToString();
+            }
+            return repsonse;
         }
         public async Task<bool> UserExists(string username)
         {
@@ -52,6 +68,22 @@ namespace dotnet_rpg.Data
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
         }
     }
