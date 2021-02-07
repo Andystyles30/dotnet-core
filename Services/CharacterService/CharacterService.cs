@@ -8,7 +8,7 @@ using dotnet_rpg.Dtos.Character;
 using dotnet_rpg.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnet_rpg.Controllers.Services.CharacterService
+namespace dotnet_rpg.Services.CharacterService
 {
     public class CharacterService : ICharacterService
     {

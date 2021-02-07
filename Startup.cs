@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using dotnet_rpg.Controllers.Services.CharacterService;
+using dotnet_rpg.Services.CharacterService;
 using Microsoft.EntityFrameworkCore;
 namespace dotnet_rpg
 {

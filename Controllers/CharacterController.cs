@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnet_rpg.Models;
-using dotnet_rpg.Controllers.Services.CharacterService;
+using dotnet_rpg.Services.CharacterService;
 using dotnet_rpg.Dtos.Character;
 using Microsoft.AspNetCore.Mvc;
 
