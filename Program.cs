@@ -20,7 +20,11 @@ namespace dotnet_rpg
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureKestrel(options =>
+                    {
+                        options.AddServerHeader = false;
+                    })
+                    .UseStartup<Startup>();
                 });
     }
 }
