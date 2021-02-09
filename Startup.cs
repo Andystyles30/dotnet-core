@@ -69,11 +69,12 @@ namespace dotnet_rpg
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet_rpg v1"));
             }
 
+            app.UseHsts(hsts => hsts.MaxAge(365));
             app.UseXContentTypeOptions();
             app.UseReferrerPolicy(opt => opt.NoReferrer());
             app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
             app.UseXfo(opt => opt.Deny());
-            app.UseCspReportOnly(opt => opt
+            app.UseCsp(opt => opt
                 .BlockAllMixedContent()
                 .StyleSources(s => s.Self())
                 .FontSources(s => s.Self())
@@ -82,6 +83,7 @@ namespace dotnet_rpg
                 .ImageSources(s => s.Self())
                 .ScriptSources(s => s.Self())
                 );
+
             // app.UseHttpsRedirection();
 
             app.UseRouting();
